@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>State Finder</title>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1 class="header-info">Where in the world?</h1>
+        <div class="color-mode">
+            <button type="button" data-theme-toggle aria-label="" class="color-icon">
+                <img src="img/moon.svg" alt="">
+            </button>
+            <h2 class="color-info">Dark mode</h2>
+        </div>
+    </div>
+
+    <div class="components">
+        <form class="search-form">
+            <div class="search-icon"></div>
+            <input type="text" class="search-input" placeholder="search for a country...">
+        </form>
+
+        <div class="region">
+            <div class="region-text">Filter by Region</div>
+            <div class="dropdown-arrow"></div>
+            <ul class="dropdown">
+                <li class="dropdown-list">Africa</li>
+                <li class="dropdown-list">America</li>
+                <li class="dropdown-list">Asia</li>
+                <li class="dropdown-list">Europe</li>
+                <li class="dropdown-list">Oceania</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="countries">
+        <!-- <div class="country">
+            <div class="country-flag">
+                <img src="./design/desktop-preview.jpg" alt="">
+            </div>
+            <div class="country-info">
+                <h1 class="country-name">Germay</h1>
+                <p>Population<span>: 465789</span></p>
+                <p>Region<span>: 465789</span></p>
+                <p>capital<span>: 465789</span></p>
+            </div>
+        </div> -->
+    </div>
+</body>
+</html>
