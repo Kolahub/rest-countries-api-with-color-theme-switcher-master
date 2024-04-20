@@ -1,0 +1,37 @@
+[data-theme = "light"] {
+    --arrow: url(../img/angle-up-solid\ \(1\).svg);
+    --searchIcon: url(../img/magnifying-glass-solid\ \(1\).svg);
+    --arrow-right: url(../img/arrow-left-solid.svg);
+    --text: hsl(200, 15%, 8%); /* Light Mode Text */
+    --inputText: hsl(0, 0%, 52%); /* Light Mode Input */
+    --white: hsl(0, 0%, 100%);
+    --background: hsl(0, 0%, 98%); /* Light Mode Background */
+}
+
+[data-theme = "dark"] {
+    --arrow: url(../img/angle-up-solid\ \(2\).svg);
+    --searchIcon: url(../img/magnifying-glass-solid.svg);
+    --arrow-right: url(../img/arrow-left-solid\ \(1\).svg);
+    --text:  hsl(0, 0%, 100%);
+    --inputText: hsl(0, 0%, 52%); /* Light Mode Input */
+    --white: hsl(209, 23%, 22%); /* Dark Mode Elements */
+    --background: hsl(207, 26%, 17%); /* Dark Mode Background */
+}
+
+*,
+::after,
+::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%; 
+}
+
+body {
+    font-family: "Nunito Sans", sans-serif;
+    box-sizing: inherit;
+    background-color: var(--background);
+}
