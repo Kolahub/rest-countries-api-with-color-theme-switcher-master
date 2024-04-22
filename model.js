@@ -4,7 +4,6 @@ const dropdownArrow = document.querySelector('.dropdown-arrow')
 const countries = document.querySelector('.countries')
 const searchForm = document.querySelector('.search-form')
 const searchInput = document.querySelector('.search-input')
-const searchIcon = document.querySelector('.search-icon')
 
 let data;
 let regionData = false;
@@ -67,7 +66,10 @@ const getRegionCountries = async function (region) {
       const data = await res.json()
 
       const neighbour = data[0].borders;
-      if (!neighbour) throw new Error('No neighbour found!');
+      if (!neighbour) {
+        renderData(data)
+        throw new Error('No neighbour found!');
+    }
       const neighbourRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbour}`)
       if (!neighbourRes.ok) throw new Error('dxfcgvhbj');
       const neighbourData = await neighbourRes.json()
@@ -79,30 +81,38 @@ const getRegionCountries = async function (region) {
   }
 export  const getAllCountries = async function (name) {
     try {
-    const res = await fetch(name ?  `https://restcountries.com/v3.1/name/${name}` : 'https://restcountries.com/v3.1/all' );
-      if (!res.ok) throw new Error('Error get countries data.')
-      const data = await res.json()
-
-      const neighbour = data[0].borders;
-      if (!neighbour) throw new Error('No neighbour found!');
-      const neighbourRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbour}`)
-      if (!neighbourRes.ok) throw new Error('dxfcgvhbj');
-      const neighbourData = await neighbourRes.json()
-
+      const res= await fetchCountry (name)
+      const [data, neighbourData]= res
       renderData(data, neighbourData)
-      console.log(data)
-      console.log(neighbourData, '⭐⭐⭐⭐')
-    return data;
     } catch (err) {
       console.log(err)
     }
   }
 
+export const fetchCountry = async function (name) {
+    try {
+    const res = await fetch(name ?  `https://restcountries.com/v3.1/name/${name}` : 'https://restcountries.com/v3.1/all' );
+        if (!res.ok) throw new Error('Error get countries data.')
+        const data = await res.json()
+  
+        const neighbour = data[0].borders;
+        if (!neighbour) throw new Error('No neighbour found!');
+        const neighbourRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbour}`)
+        if (!neighbourRes.ok) throw new Error('dxfcgvhbj');
+        const neighbourData = await neighbourRes.json()
+        console.log(data)
+        return [data, neighbourData]
+      } catch (err) {
+        console.log(err)
+      }
+  }
+
 export function searchD() {
-  searchForm.addEventListener('input', function(e) {
-    e.preventDefault();
-    getAllCountries(searchInput.value);
-  });
+  ['keyup','keydown'].forEach(ev => {
+    searchForm.addEventListener(ev, function(e) {
+      getAllCountries(searchInput.value);
+    });
+  })
 }
 
   export const moreInfo = function (arr, arrNest) {
@@ -111,15 +121,17 @@ export function searchD() {
         const countryElement = e.target.closest('.country');
         if (countryElement) {
           const countryId = countryElement.dataset.id;
-          const moreInfoD = arr.find(obj => obj.id === countryId);
-            localStorage.setItem('selectedCountry', JSON.stringify(moreInfoD));
-            localStorage.setItem('borderCountries', JSON.stringify(arrNest));
-            // const countryName = moreInfoD.name.common
-            // getNestCountries(moreInfoD.name.common)
-            // console.log(countryName)
-            console.log(moreInfoD);
-            console.log(countryElement);
-            window.location.href = './countryData.html'
+          moreInfoObj(arr, arrNest, countryId)
+          console.log(countryElement);
         }
     });
+}
+
+export function moreInfoObj (arr, arrNest, countryId) {
+  const moreInfoD = arr.find(obj => obj.id === countryId);
+  localStorage.setItem('selectedCountry', JSON.stringify(moreInfoD));
+  localStorage.setItem('borderCountries', JSON.stringify(arrNest));
+  console.log(moreInfoD);
+  window.location.href = './details.html'
+  return moreInfoD;
 }
