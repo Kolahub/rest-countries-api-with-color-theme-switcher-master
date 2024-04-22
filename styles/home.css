@@ -302,3 +302,12 @@
     font-size: 2rem;
   }
 }
+
+@media only screen and (max-width: 28.125rem) {
+  .countries { 
+    max-width: 100%;
+    width: calc(100% - 4rem);
+    margin: 0 2rem;
+    margin-top: 5rem;
+  }
+}
