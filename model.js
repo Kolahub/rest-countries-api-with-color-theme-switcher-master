@@ -58,6 +58,7 @@ export const renderData = function (array) {
       }
       paginationNum.textContent = `Page ${num} of ${totalPageNum}`
       paginationList(end, start, array)
+      window.scrollTo(0, 0)
     }
   })
 

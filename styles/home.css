@@ -375,6 +375,10 @@
     font-size: 2.5rem;
   }
 
+  .pagination-btn button:hover{ 
+    transform: scale(1) translateY(0);
+  }
+
 }
 
 @media only screen and (max-width: 28.125rem) {
