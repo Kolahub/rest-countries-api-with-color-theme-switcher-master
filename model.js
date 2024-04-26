@@ -4,18 +4,67 @@ const dropdownArrow = document.querySelector('.dropdown-arrow')
 const countries = document.querySelector('.countries')
 const searchForm = document.querySelector('.search-form')
 const searchInput = document.querySelector('.search-input')
+const loader = document.querySelector('.loader')
+const pagination = document.querySelector('.pagination')
+const paginationBtn1 = document.querySelector('.pagination-btn1')
+
 
 let data;
 let regionData = false;
 
+export const renderData = function (array) {
+  const paginationNum = document.querySelector('.pagination-num')
+  const cardsPerPage = 12
+  let start = 0
+  let end = 12
+  let num = 1
+  const totalPageNum = Math.ceil(array.length / cardsPerPage)
+  paginationNum.textContent = `Page ${num} of ${totalPageNum}`
+  pagination.addEventListener('click', function(e) {
+    if(e.target.classList.contains('pagination-btn2')) {
+      start = end
+      end += cardsPerPage
+      num++
 
-export const renderData = function (array, arrayNest) {
+      if (num > totalPageNum) num = 1
+      
+      if (end === (totalPageNum * cardsPerPage)) {
+        start = end - 11
+        end = array.length
+      }
+
+      if (end > (totalPageNum * cardsPerPage)) { 
+        start = 0
+        end = 12
+      }
+
+      if (start === 0 && end === cardsPerPage) {
+        paginationBtn1.classList.add('hidden')
+      } else {
+        paginationBtn1.classList.remove('hidden')
+      }
+      
+      paginationNum.textContent = `Page ${num} of ${totalPageNum}`
+      paginationList(end, start, array)
+      window.scrollTo(0, 0)
+    }
+
+    if(e.target.classList.contains('pagination-btn1')) {
+      start -= cardsPerPage
+      end -= cardsPerPage
+      num--
+      if (start === 0 && end === cardsPerPage) {
+        paginationBtn1.classList.add('hidden')
+      }
+      paginationNum.textContent = `Page ${num} of ${totalPageNum}`
+      paginationList(end, start, array)
+    }
+  })
+
+  function paginationList (ed, str, arr) {
     data = '';
-    array.forEach(el => {
-      const generateUniqueID = (idLength) => [...Array(idLength).keys()].map((elem)=>Math.random().toString(36).substr(2, 1)).join("")
-      const id = generateUniqueID(10)
-      el.id = `${id}`;
-      data += `<div class="country" data-id = ${id}>
+    arr.slice(str, ed).forEach(el => {
+      data += `<a href='./details.html#${el.name.common}'><div class="country" data-id = ${el.id}>
       <div class="country-flag">
           <img src="${el.flags.svg}" alt="${el.flags.alt}">
       </div>
@@ -25,10 +74,11 @@ export const renderData = function (array, arrayNest) {
           <p>Region<span>: ${el.region}</span></p>
           <p>capital<span>: ${el.capital}</span></p>
       </div>
-  </div>`
+  </div></a>`
     });
     countries.innerHTML = data;
-    moreInfo(array, arrayNest)
+  }
+  paginationList(end, start, array)
   }
 
 export const regionD = function () {
@@ -64,44 +114,29 @@ const getRegionCountries = async function (region) {
       const res = await fetch (`https://restcountries.com/v3.1/region/${region}`)
       if(!res.ok) throw new Error('Error getting Countries by Region.')
       const data = await res.json()
-
-      const neighbour = data[0].borders;
-      if (!neighbour) {
-        renderData(data)
-        throw new Error('No neighbour found!');
-    }
-      const neighbourRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbour}`)
-      if (!neighbourRes.ok) throw new Error('dxfcgvhbj');
-      const neighbourData = await neighbourRes.json()
-      renderData(data, neighbourData)
-      console.log(data)
+      renderData(data)
     } catch (err) {
       console.log(err)
     }
   }
+
+ export function showSpinner () {
+    loader.classList.remove('hidden')
+  }
+ export function hideSpinner () {
+    loader.classList.add('hidden')
+  }
+
 export  const getAllCountries = async function (name) {
-    try {
-      const res= await fetchCountry (name)
-      const [data, neighbourData]= res
-      renderData(data, neighbourData)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-export const fetchCountry = async function (name) {
-    try {
+  try {
+    showSpinner()
     const res = await fetch(name ?  `https://restcountries.com/v3.1/name/${name}` : 'https://restcountries.com/v3.1/all' );
         if (!res.ok) throw new Error('Error get countries data.')
         const data = await res.json()
-  
-        const neighbour = data[0].borders;
-        if (!neighbour) throw new Error('No neighbour found!');
-        const neighbourRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbour}`)
-        if (!neighbourRes.ok) throw new Error('dxfcgvhbj');
-        const neighbourData = await neighbourRes.json()
+        hideSpinner()
+        renderData(data)
         console.log(data)
-        return [data, neighbourData]
+        return data
       } catch (err) {
         console.log(err)
       }
@@ -109,29 +144,9 @@ export const fetchCountry = async function (name) {
 
 export function searchD() {
   ['keyup','keydown'].forEach(ev => {
-    searchForm.addEventListener(ev, function(e) {
-      getAllCountries(searchInput.value);
+    searchForm.addEventListener(ev, function() {
+    countries.innerHTML = '';
+    getAllCountries(searchInput.value);
     });
   })
-}
-
-  export const moreInfo = function (arr, arrNest) {
-    countries.addEventListener('click', function (e) {
-        localStorage.removeItem('selectedCountry');
-        const countryElement = e.target.closest('.country');
-        if (countryElement) {
-          const countryId = countryElement.dataset.id;
-          moreInfoObj(arr, arrNest, countryId)
-          console.log(countryElement);
-        }
-    });
-}
-
-export function moreInfoObj (arr, arrNest, countryId) {
-  const moreInfoD = arr.find(obj => obj.id === countryId);
-  localStorage.setItem('selectedCountry', JSON.stringify(moreInfoD));
-  localStorage.setItem('borderCountries', JSON.stringify(arrNest));
-  console.log(moreInfoD);
-  window.location.href = './details.html'
-  return moreInfoD;
 }

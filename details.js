@@ -1,13 +1,34 @@
 import { toggleDarkLightMode } from "./lightMode.js";
-import { fetchCountry, moreInfoObj } from "./model.js";
+import { showSpinner, hideSpinner } from "./model.js";
 
-const renderPage = function () {
-const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"));
-const borderCountries = JSON.parse(localStorage.getItem("borderCountries"));
-console.log(selectedCountry);
-if (selectedCountry) {
-  const objCur = Object.entries(selectedCountry.currencies);
-  const objLang = Object.entries(selectedCountry.languages);
+const renderDetails = async function (name) {
+  try {
+    showSpinner()
+    const res = await fetch(`https://restcountries.com/v3/name/${name}`)
+    const [data] = await res.json()
+    const neighbours = data.borders
+  
+    if(!neighbours)  {
+      hideSpinner()
+      renderPage(data)
+      return;
+    }
+    const neighboursRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbours}`)
+  if (!neighboursRes.ok) throw new Error('Failed to get neighbour Country')
+  const neighboursData = await neighboursRes.json()
+hideSpinner()
+    renderPage(data, neighboursData)
+    console.log(data)
+  } catch(error) {
+    console.error(error)
+  }
+}
+
+const renderPage = function (data, neighboursData) {
+console.log(data);
+if (data) {
+  const objCur = Object.entries(data.currencies);
+  const objLang = Object.entries(data.languages);
   let nameCur,
     arr = [];
   for (const [i, k] of objCur) {
@@ -18,30 +39,30 @@ if (selectedCountry) {
   }
   const html = `
       <div class="moreInfo-img">
-      <img src="${selectedCountry.flags.svg}" alt="..." class="moreInfo-pic">
+      <img src="${data.flags.at(0)}" alt="..." class="moreInfo-pic">
       </div>
       <div class="moreInfo-typo">
-      <h1>${selectedCountry.name.common}</h1>
+      <h1>${data.name.common}</h1>
       <div class="moreInfo-lists">
           <ul class="moreInfo-data">
               <li class="moreInfo-list">Native Name<span>: ${
-                selectedCountry.name.official
+                data.name.official
               }</span></li>
               <li class="moreInfo-list">Population<span>: ${
-                selectedCountry.population
+                data.population
               }</span></li>
               <li class="moreInfo-list">Region<span>:  ${
-                selectedCountry.region
+                data.region
               }</span></li>
               <li class="moreInfo-list">Sub Region<span>:  ${
-                selectedCountry.subregion
+                data.subregion
               }</span></li>
-              <li class="moreInfo-list">Capital<span>: ${selectedCountry.capital.at(
+              <li class="moreInfo-list">Capital<span>: ${data.capital.at(
                 0
               )} </span></li>
           </ul>
           <ul class="moreInfo-data">
-              <li class="moreInfo-list">Top Level Domain<span>: ${selectedCountry.tld.at(
+              <li class="moreInfo-list">Top Level Domain<span>: ${data.tld.at(
                 0
               )}</span></li>
               <li class="moreInfo-list">Currencies<span>: ${nameCur}</span></li>
@@ -53,34 +74,37 @@ if (selectedCountry) {
       <div class="border">
       <div class="border-title">Border Countries:</div>
       <div class="border-data">
-      ${borderCountries
-        .map((el) => {
+      ${neighboursData ? 
+        neighboursData.map((el) => {
           return `<div class="border-list">${el.name.common}</div>`;
         })
-        .join("")}
+        .join("") : 'No Border Countries'}
       </div>
       </div>
       </div>`;
   document.querySelector(".moreInfo").innerHTML = html;
+  renderNeighbourData()
 }
 }
-renderPage()
+
 toggleDarkLightMode();
+['hashchange','load'].forEach(ev => {
+  window.addEventListener(ev, function () {
+    const name = window.location.hash.slice(1)
+    renderDetails(name)
+  })
+});
 
-const fetchBorderCon = async function (name, id) {
-  const res = await fetchCountry(name)
-  const [data, neighbourData] = res
-  moreInfoObj(data, neighbourData, id)
-  console.log(res, '⭐⭐⭐')
-}
-
-const borderCountry = document.querySelector('.border-data');
-
+function renderNeighbourData () {
+  const borderCountry = document.querySelector('.border-data');
 borderCountry.addEventListener('click', function (e) {
 if(e.target.classList.contains('border-list')) {
+  document.querySelector(".moreInfo").innerHTML = ''
   const selectedNeighbour = e.target;
-  fetchBorderCon(selectedNeighbour.textContent, selectedNeighbour.dataset.id)
-  renderPage()
-  console.log(selectedNeighbour)
+  console.log(selectedNeighbour.textContent)
+  window.history.pushState(null, '', `#${selectedNeighbour.textContent}`)
+  renderDetails(selectedNeighbour.textContent)
 }
 })
+}
+

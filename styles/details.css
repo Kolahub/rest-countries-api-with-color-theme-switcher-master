@@ -2,6 +2,7 @@
     width: calc(100% - 13rem);
     margin: 0 6.5rem;
     margin-top: 10rem;
+    margin-bottom: 4rem;
 }
 
 .previous-link {
@@ -90,6 +91,7 @@
     flex: 1;
     font-size: 1.5rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .border-data {
@@ -133,7 +135,7 @@
 
 @media only screen and (max-width: 60.5em) { 
     .previous-link {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     .previous-icon {
         height: 1.9rem;
@@ -141,7 +143,7 @@
     }
     .moreInfo { 
         width: 100%;
-        max-width: 70rem;
+        max-width: 80rem;
         margin: 0 auto;
         flex-direction: column;
         gap: 8rem;
@@ -155,20 +157,29 @@
     .moreInfo-typo { 
         width: 100%;
     }
+
+    .moreInfo-typo h1 {
+        font-size: 2.7rem;
+    }
+
     .moreInfo-list {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
     }
     
     .moreInfo-list span{ 
-        font-size: 1.6rem;
+        font-size: 2rem;
     }
 
     .border-title {
+        font-size: 2.2rem;
+    }
+
+    .border-list { 
         font-size: 2rem;
     }
 
     .border-list { 
-        font-size: 1.8rem;
+        padding: 1.4rem 2.2rem;
     }
 
 }
@@ -178,8 +189,14 @@
         width: 100%; 
         margin: 0;
         margin-top: 14rem;
+        margin-bottom: 4rem;
         padding: 0 4rem;
     }
+
+    .previous-link {
+        font-size: 2.5rem;
+    }
+    
     .moreInfo-lists { 
         flex-direction: column;
         gap: 4rem;
@@ -193,9 +210,27 @@
 
     .border-data {  
         width: 100%;
+        padding-bottom: 4rem;
     }
+
+    .moreInfo-typo h1 {
+        font-size: 3rem;
+    }
+
+    .moreInfo-list {
+        font-size: 2.5rem;
+    }
+    
+    .moreInfo-list span{ 
+        font-size: 2.3rem;
+    }
+
+    .border-title {
+        font-size: 2.5rem;
+    }
+
     .border-list { 
-        padding: 1.4rem 1.6rem;
+        font-size: 2.3rem;
     }
 }
 

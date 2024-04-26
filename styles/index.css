@@ -35,3 +35,8 @@ body {
     box-sizing: inherit;
     background-color: var(--background);
 }
+
+a {
+    text-decoration: none;
+    color: var(--text);
+}

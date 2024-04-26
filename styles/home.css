@@ -139,8 +139,6 @@
   gap: 3rem;
   max-width: 110rem;
   margin: 0 auto;
-  /* width: calc(100% - 13rem);
-  margin: 0 6.5rem; */
   margin-top: 4rem;
   padding:0 2rem;
 }
@@ -197,6 +195,46 @@
   transform: translateY(0);
 }
 
+.pagination { 
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 110rem;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+.pagination-btn {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination-btn button{
+  font-size: 1.8rem;
+  color: var(--text);
+  width: 14rem;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 3rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: var(--white); 
+  cursor: pointer;
+}
+
+.pagination-btn button:hover{ 
+  transform: scale(1.1) translateY(-.5rem);
+}
+
+.pagination-btn2 {
+  margin-left: auto;
+}
+
+.pagination-num { 
+  font-size: 1.8rem;
+  color: var(--text);
+  align-self: center;
+}
+
 .hidden {
   display: none;
 }
@@ -246,27 +284,47 @@
     padding: 2rem;
   }
 
+  .search-input { 
+    font-size: 18px;
+  }
+
   .region {
-    font-size: 1.9rem;
+    font-size: 2.2rem;
     width: 25rem;
     padding: 1.8rem;
   }
 
   .countries { 
     grid-template-columns: repeat(2, 1fr);
-    max-width: 60rem;
+    max-width: 85rem;
   }
 
   .country-info {
-    padding: 2.2rem 2rem 2.8rem 2rem;
+    padding: 3.7rem 2rem 4.7rem 2rem;
   }
 
   .country-info h1 {
-    font-size: 2.3rem;
+    font-size: 2.7rem;
   }
 
   .country-info p {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+  }
+
+  .pagination {  
+    max-width: 85rem;
+    gap: 4rem;
+  }
+
+  .pagination-btn button{
+    font-size: 2.2rem;
+    width: 16rem;
+    padding: 1.4rem;
+    border-radius: 3.5rem;
+  }
+
+  .pagination-num { 
+    font-size: 2.2rem;
   }
 }
 
@@ -291,16 +349,32 @@
   }
 
   .country-info {
-    padding: 2.2rem 2rem 3.2rem 2rem;
+    padding: 4rem 2rem 5rem 2rem;
   }
 
   .country-info h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 
   .country-info p {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
+
+  .pagination {  
+    max-width:35rem;
+  }
+
+  .pagination-btn button{
+    font-size: 2.5rem;
+    width: 18rem;
+    padding: 1.6rem;
+    border-radius: 4rem;
+  }
+
+  .pagination-num { 
+    font-size: 2.5rem;
+  }
+
 }
 
 @media only screen and (max-width: 28.125rem) {
@@ -309,5 +383,11 @@
     width: calc(100% - 4rem);
     margin: 0 2rem;
     margin-top: 5rem;
+  }
+
+  .pagination {  
+    max-width: 100%;
+    width: calc(100% - 4rem);
+    margin: 0 2rem;
   }
 }
