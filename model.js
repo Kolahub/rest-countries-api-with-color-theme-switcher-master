@@ -5,6 +5,7 @@ const countries = document.querySelector('.countries')
 const searchForm = document.querySelector('.search-form')
 const searchInput = document.querySelector('.search-input')
 const loader = document.querySelector('.loader')
+export const error = document.querySelector('.error')
 const pagination = document.querySelector('.pagination')
 const paginationBtn1 = document.querySelector('.pagination-btn1')
 
@@ -46,7 +47,11 @@ export const renderData = function (array) {
       
       paginationNum.textContent = `Page ${num} of ${totalPageNum}`
       paginationList(end, start, array)
-      window.scrollTo(0, 0)
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     }
 
     if(e.target.classList.contains('pagination-btn1')) {
@@ -58,11 +63,15 @@ export const renderData = function (array) {
       }
       paginationNum.textContent = `Page ${num} of ${totalPageNum}`
       paginationList(end, start, array)
-      window.scrollTo(0, 0)
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     }
   })
 
-  function paginationList (ed, str, arr) {
+function paginationList (ed, str, arr) {
     data = '';
     arr.slice(str, ed).forEach(el => {
       data += `<a href='./details.html#${el.name.common}'><div class="country" data-id = ${el.id}>
@@ -95,6 +104,7 @@ export const regionD = function () {
   }
 })
 }
+
 export const dropD = function () {
 dropdownData.addEventListener('click', function (e) {
   if (e.target.classList.contains('dropdown-list')) {
@@ -110,44 +120,55 @@ dropdownData.addEventListener('click', function (e) {
 })
 }
 
+
+export function showSpinner () {
+  loader.classList.remove('hidden')
+}
+
+export function hideSpinner () {
+  loader.classList.add('hidden')
+}
+
 const getRegionCountries = async function (region) {
     try {
       const res = await fetch (`https://restcountries.com/v3.1/region/${region}`)
       if(!res.ok) throw new Error('Error getting Countries by Region.')
       const data = await res.json()
+      hideSpinner()
+      error.classList.add('error-hidden')
       renderData(data)
     } catch (err) {
-      console.log(err)
+      error.classList.remove('error-hidden')
+      document.querySelector('.error-msg').innerHTML = `${err}`
+      setTimeout(() => {
+        error.classList.add('error-hidden')
+      }, 5000)
     }
-  }
-
- export function showSpinner () {
-    loader.classList.remove('hidden')
-  }
- export function hideSpinner () {
-    loader.classList.add('hidden')
   }
 
 export  const getAllCountries = async function (name) {
   try {
     showSpinner()
     const res = await fetch(name ?  `https://restcountries.com/v3.1/name/${name}` : 'https://restcountries.com/v3.1/all' );
-        if (!res.ok) throw new Error('Error get countries data.')
+        if (!res.ok) throw new Error('Could not get country data.')
         const data = await res.json()
         hideSpinner()
+        error.classList.add('error-hidden')
         renderData(data)
         console.log(data)
         return data
       } catch (err) {
-        console.log(err)
+        error.classList.remove('error-hidden')
+        document.querySelector('.error-msg').innerHTML = `${err}`
+        setTimeout(() => {
+          error.classList.add('error-hidden')
+        }, 5000)
       }
   }
 
 export function searchD() {
-  ['keyup','keydown'].forEach(ev => {
-    searchForm.addEventListener(ev, function() {
+    searchForm.addEventListener('keyup', function() {
     countries.innerHTML = '';
     getAllCountries(searchInput.value);
-    });
   })
 }

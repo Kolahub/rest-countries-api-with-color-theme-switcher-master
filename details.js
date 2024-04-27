@@ -1,5 +1,5 @@
 import { toggleDarkLightMode } from "./lightMode.js";
-import { showSpinner, hideSpinner } from "./model.js";
+import { showSpinner, hideSpinner, error } from "./model.js";
 
 const renderDetails = async function (name) {
   try {
@@ -16,11 +16,16 @@ const renderDetails = async function (name) {
     const neighboursRes = await fetch(`https://restcountries.com/v3.1/alpha?codes=${neighbours}`)
   if (!neighboursRes.ok) throw new Error('Failed to get neighbour Country')
   const neighboursData = await neighboursRes.json()
-hideSpinner()
-    renderPage(data, neighboursData)
+  hideSpinner()
+  error.classList.add('error-hidden')
+  renderPage(data, neighboursData)
     console.log(data)
-  } catch(error) {
-    console.error(error)
+  } catch(err) {
+    error.classList.remove('error-hidden')
+    document.querySelector('.error-msg').innerHTML = `${err}`
+    setTimeout(() => {
+      error.classList.add('error-hidden')
+    }, 5000)
   }
 }
 
@@ -96,12 +101,11 @@ toggleDarkLightMode();
 });
 
 function renderNeighbourData () {
-  const borderCountry = document.querySelector('.border-data');
+const borderCountry = document.querySelector('.border-data');
 borderCountry.addEventListener('click', function (e) {
 if(e.target.classList.contains('border-list')) {
   document.querySelector(".moreInfo").innerHTML = ''
   const selectedNeighbour = e.target;
-  console.log(selectedNeighbour.textContent)
   window.history.pushState(null, '', `#${selectedNeighbour.textContent}`)
   renderDetails(selectedNeighbour.textContent)
 }

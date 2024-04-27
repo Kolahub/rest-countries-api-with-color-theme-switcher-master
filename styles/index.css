@@ -40,3 +40,42 @@ a {
     text-decoration: none;
     color: var(--text);
 }
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 32rem;
+    position: fixed;
+    top: 20%;
+    right: 2%;
+    padding: 1rem 2rem;
+    background-color: red;
+    transition: all .5s ease-in;
+}
+
+.error-hidden {
+    transform: translateX(80%);
+    opacity: 0;
+}
+
+.error img{ 
+    width: 4rem;
+    height: 4rem;
+}
+
+.error-msg{ 
+    font-size: 1.8rem;
+    color: white;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none;
+  }
+
+@media only screen and (max-width: 37.5rem) { 
+    .error-msg{ 
+        font-size: 2rem;
+    }
+}
