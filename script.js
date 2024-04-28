@@ -1,12 +1,14 @@
-import { toggleDarkLightMode } from "./lightMode.js";
-import { regionD, dropD, getAllCountries, searchD } from "./model.js";
+import { toggleDarkLightMode } from "./toggleColorMode.js";
+import { getAllCountries } from "./model.js";
+import searchViews from "./views/searchViews.js";
+import  region  from "./views/regionViews.js";
 
-function init () {
-    toggleDarkLightMode();
-    regionD();
-    dropD();
-    getAllCountries();
-    searchD();
+const name = window.location.hash.slice(1);
+function init() {
+  toggleDarkLightMode();
+  getAllCountries(name);
+  searchViews._searchComp()
+  region._dropdownComp()
+  region._regionData()
 }
-
-init()
+init();
