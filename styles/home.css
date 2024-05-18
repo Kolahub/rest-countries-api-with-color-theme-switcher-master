@@ -225,9 +225,9 @@
   cursor: pointer;
 }
 
-/* .pagination-btn button:hover{ 
+.pagination-btn button:hover{ 
   transform: scale(1.1) translateY(-.5rem);
-} */
+}
 
 .pagination-btn2 {
   margin-left: auto;
@@ -343,6 +343,11 @@
 
   .country-info p {
     font-size: 2.4rem;
+  }
+
+  .pagination { 
+    width: calc(100% - 4rem);
+    margin: 0 2rem;
   }
 
   .pagination-btn button{
