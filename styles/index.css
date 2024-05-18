@@ -70,9 +70,55 @@ a {
     font-weight: 600;
 }
 
+.imgLoader-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.imgLoader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.3), transparent);
+    animation: loading 2s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
 .hidden {
     display: none;
   }
+
+  @media only screen and (max-width: 112.5em) {
+    html {
+      font-size: 75%;
+    }
+  }
+
+  @media only screen and (max-width: 75em) {
+    html {
+      font-size: 56.25%;
+    } 
+}
+
+@media only screen and (max-width: 56.25em) {
+    html {
+      font-size: 50%;
+    }
+}
 
 @media only screen and (max-width: 37.5rem) { 
     .error-msg{ 

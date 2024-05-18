@@ -15,16 +15,13 @@ class ResultView {
     this._paginationNum.textContent = `Page ${num} of ${totalPageNum}`;
 
     const updateData = ()  => {
-        this._paginationList(end, start, array);
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
+    this._paginationList(end, start, array);
+    this._paginationNum.textContent = `Page ${num} of ${totalPageNum}`;
     }
 
     this._pagination.addEventListener("click",  (e) => {
       if (e.target.classList.contains("pagination-btn2")) {
+        
         start = end;
         end += cardsPerPage;
         num++;
@@ -46,9 +43,8 @@ class ResultView {
         } else {
             this._paginationBtn1.classList.remove("hidden");
         }
-
-        this._paginationNum.textContent = `Page ${num} of ${totalPageNum}`;
         updateData()
+        console.log('ACTIVE');
       }
 
       if (e.target.classList.contains("pagination-btn1")) {
@@ -58,12 +54,10 @@ class ResultView {
         if (start === 0 && end === cardsPerPage) {
             this._paginationBtn1.classList.add("hidden");
         }
-        this._paginationNum.textContent = `Page ${num} of ${totalPageNum}`;
         updateData()
       }
     });
-
-    this._paginationList(end, start, array);
+    updateData()
   }
 
   _paginationList(ed, str, arr) {
@@ -71,17 +65,52 @@ class ResultView {
     arr.slice(str, ed).forEach((el) => {
       this._data += `<a href='./details.html#${el.name.common}'><div class="country" data-id = ${el.id}>
           <div class="country-flag">
-              <img src="${el.flags.svg}" alt="${el.flags.alt}">
+          <div class="imgLoader-container">
+          <div class="imgLoader"></div>
+      </div>
+      <img src="${el.flags.svg}" alt="${el.flags.alt}" class="country-flag-img">
           </div>
           <div class="country-info">
               <h1 class="country-name">${el.name.common}</h1>
-              <p>Population<span>: ${el.population}</span></p>
+              <p>Population<span>: ${new Intl.NumberFormat().format(el.population)}</span></p>
               <p>Region<span>: ${el.region}</span></p>
               <p>capital<span>: ${el.capital}</span></p>
           </div>
       </div></a>`;
     });
     this._countries.innerHTML = this._data;
+
+    const countryFlagImg = document.querySelectorAll('.country-flag-img')
+    
+    this._imgLoaderDisplay(countryFlagImg)
+    this._scrollTo()
+  }
+
+  _scrollTo () {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+    
+  }
+
+  _imgLoaderDisplay (countryFlagImg) {
+    countryFlagImg.forEach(img => {
+      const loaderContainer = img.previousElementSibling;
+
+      // Check if the src attribute is not empty
+      if (img.src) {
+          img.onload = () => {
+              loaderContainer.classList.add('hidden');
+          };
+
+          img.onerror = () => {
+              loaderContainer.classList.add('hidden');
+              img.alt = "Image not available"; 
+          };
+      }
+    })
   }
 
 _renderDetailsData (data, neighboursData) {
