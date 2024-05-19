@@ -137,7 +137,7 @@ _renderDetailsData (data, neighboursData) {
                   data.name.official
                 }</span></li>
                 <li class="moreInfo-list">Population<span>: ${
-                  data.population
+                 new Intl.NumberFormat().format(data.population)
                 }</span></li>
                 <li class="moreInfo-list">Region<span>:  ${
                   data.region
