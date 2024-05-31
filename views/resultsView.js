@@ -44,7 +44,7 @@ class ResultView {
             this._paginationBtn1.classList.remove("hidden");
         }
         updateData()
-        console.log('ACTIVE');
+        // console.log('ACTIVE');
       }
 
       if (e.target.classList.contains("pagination-btn1")) {

@@ -12,7 +12,7 @@ export const getRegionCountries = async function (region) {
       error.hideError()
       resultsView._renderData(data)
     } catch (err) {
-      error.showError()
+      error.showError(err.message)
     }
   }
 
@@ -20,15 +20,15 @@ export  const getAllCountries = async function (name) {
   try {
     loader.showSpinner()
     const res = await fetch(name ?  `https://restcountries.com/v3.1/name/${name}` : 'https://restcountries.com/v3.1/all' );
-        if (!res.ok) throw new Error('Could not get country data.')
+        if (!res.ok) throw new Error('Country not found.')
         const data = await res.json()
        loader.hideSpinner()
        error.hideError()
         resultsView._renderData(data)
-        console.log(data)
+        // console.log(data)
         return data
       } catch (err) {
-        error.showError()
+        error.showError(err.message)
       }
   }
 
@@ -38,6 +38,8 @@ export const getDetailsData = async function (name) {
       const res = await fetch(`https://restcountries.com/v3/name/${name}`);
       const [data] = await res.json();
       const neighbours = data.borders;
+
+      if(!res.ok) throw new Error('Failed to get country data.')
   
       if (!neighbours) {
         loader.hideSpinner();
@@ -52,8 +54,8 @@ export const getDetailsData = async function (name) {
       loader.hideSpinner();
       error.hideError()
       resultsView._renderDetailsData(data, neighboursData);
-      console.log(data);
+      // console.log(data);
     } catch (err) {
-      error.showError()
+      error.showError(err.message)
     }
   };
