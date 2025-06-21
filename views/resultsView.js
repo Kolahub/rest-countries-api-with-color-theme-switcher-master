@@ -127,7 +127,7 @@ _renderDetailsData (data, neighboursData) {
       }
       const html = `
         <div class="moreInfo-img">
-        <img src="${data.flags.at(0)}" alt="..." class="moreInfo-pic">
+        <img src="${data.flags.svg}" alt="${data.flags.alt || 'Country flag'}" class="moreInfo-pic">
         </div>
         <div class="moreInfo-typo">
         <h1>${data.name.common}</h1>
@@ -145,14 +145,10 @@ _renderDetailsData (data, neighboursData) {
                 <li class="moreInfo-list">Sub Region<span>:  ${
                   data.subregion
                 }</span></li>
-                <li class="moreInfo-list">Capital<span>: ${data.capital.at(
-                  0
-                )} </span></li>
+                <li class="moreInfo-list">Capital<span>: ${Array.isArray(data.capital) ? data.capital[0] : data.capital || 'N/A'} </span></li>
             </ul>
             <ul class="moreInfo-data">
-                <li class="moreInfo-list">Top Level Domain<span>: ${data.tld.at(
-                  0
-                )}</span></li>
+                <li class="moreInfo-list">Top Level Domain<span>: ${Array.isArray(data.tld) ? data.tld[0] : data.tld || 'N/A'}</span></li>
                 <li class="moreInfo-list">Currencies<span>: ${nameCur}</span></li>
                 <li class="moreInfo-list">Languages<span>: ${arr.join(
                   ", "
